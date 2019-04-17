@@ -1,0 +1,276 @@
+import React, { Fragment } from 'react';
+import {
+  StyleSheet,
+  StatusBar,
+  View,
+  Platform,
+  Dimensions,
+  TouchableHighlight,
+  LayoutAnimation,
+  NativeModules,
+  Animated,
+  Easing,
+} from 'react-native';
+import { AppLoading, Asset, Font, Icon } from 'expo';
+import styled from 'styled-components';
+
+import AppNavigator from './navigations/AppNavigator';
+
+import robotDev from './assets/images/robot-dev.png';
+import robotProd from './assets/images/robot-prod.png';
+import font from './assets/fonts/SpaceMono-Regular.ttf';
+import Colors from './constants/Colors';
+import TabBarIcon from './components/TabBarIcon';
+
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
+
+const { UIManager } = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+
+const DURATION = 200;
+const NAVIGATE_BUTTON_LEFT = deviceWidth * 2 / 5;
+
+const NavigateButtonContainer = styled.View`
+  position: absolute;
+  height: ${props => props.height || 90};
+  width: ${props => props.width || 100};
+  bottom: 0;
+  left: ${props => props.left || 0};
+  background-color: ${props => props.backgroundColor || 'white'};
+`
+const NavigateButtonTouchable = styled.TouchableHighlight`
+  position: absolute;
+  height: ${props => props.height || 100};
+  width: ${props => props.width || 100};
+  bottom: ${props => props.bottom || 0};
+  left: ${props => props.left || 0};
+  background-color: ${props => props.backgroundColor || 'white'};
+  border-radius: ${props => props.borderRadius || 100};
+  z-index: ${props => props.zIndex || 0};
+`
+const OnPressNavigatePanel = styled.TouchableHighlight`
+  position: absolute;
+  height: ${props => props.height || 0};
+  width: ${props => props.width || 0};
+  top: 0;
+  left: 0;
+  background-color: ${props => props.backgroundColor || 'white'};
+  opacity: 0.3;
+  z-index: 0;
+`
+const NavigateButtonView = styled.View`
+  position: absolute;
+  top: ${props => props.top || 0};
+  left: ${props => props.left || 0};
+  height: ${props => props.height || 100};
+  width: ${props => props.width || 100};
+`
+const AnimatedNavigateButton = Animated.createAnimatedComponent(NavigateButtonTouchable);
+const AnimatedPanel = Animated.createAnimatedComponent(OnPressNavigatePanel);
+export default class App extends React.Component {
+  state = {
+    isLoadingComplete: false,
+    isOnNavigatePanelOpen: false,
+    anim: new Animated.Value(0),
+    anim2: new Animated.Value(0),
+    anim2Left: new Animated.Value(NAVIGATE_BUTTON_LEFT),
+    anim3: new Animated.Value(0),
+    anim3Left: new Animated.Value(NAVIGATE_BUTTON_LEFT),
+  };
+  _onPressNavigate = async () => {
+    await LayoutAnimation.easeInEaseOut();
+    await this.setState({ isOnNavigatePanelOpen: !this.state.isOnNavigatePanelOpen });
+    const open = this.state.isOnNavigatePanelOpen;
+    const toValue = open ? 150 : 0;
+    const toValue2 = open ? 100 : 0;
+    const toValue2Left = open ? NAVIGATE_BUTTON_LEFT - 100 : NAVIGATE_BUTTON_LEFT;
+    const toValue3 = open ? 100 : 0;
+    const toValue3Left = open ? NAVIGATE_BUTTON_LEFT + 100 : NAVIGATE_BUTTON_LEFT;
+    const createAnimation = function (value, duration, toValue, easing, delay = 0) {
+      return Animated.timing(
+        value,
+        {
+          toValue,
+          duration,
+          easing,
+          delay
+        }
+      )
+    }
+    Animated.parallel([
+      createAnimation(this.state.anim, DURATION, toValue, Easing.ease),
+      createAnimation(this.state.anim2, DURATION, toValue2, Easing.ease),
+      createAnimation(this.state.anim2Left, DURATION, toValue2Left, Easing.ease),
+      createAnimation(this.state.anim3, DURATION, toValue3, Easing.ease),
+      createAnimation(this.state.anim3Left, DURATION, toValue3Left, Easing.ease),
+    ]).start()
+  }
+
+  render() {
+    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
+        />
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <AppNavigator />
+          {this.state.isOnNavigatePanelOpen ?
+            <AnimatedPanel
+              backgroundColor={Colors.tintColor}
+              width={deviceWidth}
+              height={deviceHeight}
+              onPress={this._onPressNavigate}
+              isOnNavigatePanelOpen={this.state.isOnNavigatePanelOpen}
+            >
+              <View></View>
+            </AnimatedPanel> : null}
+          <NavigateButton
+            anim={this.state.anim}
+            anim2={this.state.anim2}
+            anim2Left={this.state.anim2Left}
+            anim3={this.state.anim3}
+            anim3Left={this.state.anim3Left}
+            isOnNavigatePanelOpen={this.state.isOnNavigatePanelOpen}
+            _onPressNavigate={this._onPressNavigate}
+          />
+        </View>
+      );
+    }
+  }
+
+  _loadResourcesAsync = async () => {
+    return Promise.all([
+      Asset.loadAsync([
+        robotDev,
+        robotProd,
+      ]),
+      Font.loadAsync({
+        // This is the font that we are using for our tab bar
+        ...Icon.Ionicons.font,
+        // We include SpaceMono because we use it in HomeScreen.js. Feel free
+        // to remove this if you are not using it in your app
+        'space-mono': font,
+      }),
+    ]);
+  };
+
+  _handleLoadingError = error => {
+    // In this case, you might want to report the error to your error
+    // reporting service, for example Sentry
+    console.warn(error);
+  };
+
+  _handleFinishLoading = () => {
+    this.setState({ isLoadingComplete: true });
+  };
+}
+
+class NavigateButton extends React.Component {
+  _onPress = async () => {
+    await this.props._onPressNavigate();
+    // const toValue = this.props.isOnNavigatePanelOpen ? 150 : 0;
+    // await Animated.timing(this.state.anim, {
+    //   toValue,
+    //   duration: 300,
+    // }).start();
+  }
+  render() {
+    return (
+      <Fragment>
+        <NavigateButtonTouchable
+          width={deviceWidth / 5}
+          height={deviceWidth / 5}
+          borderRadius={deviceWidth / 10}
+          left={NAVIGATE_BUTTON_LEFT}
+          bottom={0}
+          backgroundColor={Colors.tintColor}
+          underlayColor={Colors.tintColor}
+          onPress={this._onPress}
+          zIndex={1}
+        >
+          <NavigateButtonView
+            top={deviceWidth / 20}
+            left={deviceWidth / 20}
+            width={deviceWidth / 10}
+          >
+            <TabBarIcon
+              size={deviceWidth / 10}
+              name='calendar'
+              backgroundColor={Colors.backgroundColor}
+            />
+          </NavigateButtonView>
+        </NavigateButtonTouchable>
+        <AnimatedNavigateButton
+          width={deviceWidth / 5}
+          height={deviceWidth / 5}
+          borderRadius={deviceWidth / 10}
+          left={NAVIGATE_BUTTON_LEFT}
+          bottom={this.props.anim}
+          backgroundColor={Colors.tintColor}
+          underlayColor={Colors.tintColor}
+          onPress={this._onPress}
+          zIndex={0}
+        >
+          <NavigateButtonView
+            top={deviceWidth / 20}
+            left={deviceWidth / 20}
+            width={deviceWidth / 10}
+          >
+          </NavigateButtonView>
+        </AnimatedNavigateButton>
+        <AnimatedNavigateButton
+          width={deviceWidth / 5}
+          height={deviceWidth / 5}
+          borderRadius={deviceWidth / 10}
+          left={this.props.anim2Left}
+          bottom={this.props.anim2}
+          backgroundColor={Colors.tintColor}
+          underlayColor={Colors.tintColor}
+          onPress={this._onPress}
+          zIndex={0}
+        >
+          <NavigateButtonView
+            top={deviceWidth / 20}
+            left={deviceWidth / 20}
+            width={deviceWidth / 10}
+          >
+          </NavigateButtonView>
+        </AnimatedNavigateButton>
+        <AnimatedNavigateButton
+          width={deviceWidth / 5}
+          height={deviceWidth / 5}
+          borderRadius={deviceWidth / 10}
+          left={this.props.anim3Left}
+          bottom={this.props.anim3}
+          backgroundColor={Colors.tintColor}
+          underlayColor={Colors.tintColor}
+          onPress={this._onPress}
+          zIndex={0}
+        >
+          <NavigateButtonView
+            top={deviceWidth / 20}
+            left={deviceWidth / 20}
+            width={deviceWidth / 10}
+          >
+          </NavigateButtonView>
+        </AnimatedNavigateButton>
+      </Fragment>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
