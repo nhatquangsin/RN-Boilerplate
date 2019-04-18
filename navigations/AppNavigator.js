@@ -38,6 +38,7 @@ const MyStoryStack = createStackNavigator(
     EditStory: EditStory,
   }, {
     headerMode: 'none',
+    mode: 'modal',
     navigationOptions: {
       tabBarIcon: ({ focused }) => (
         <TabBarIcon

@@ -102,7 +102,7 @@ class MyStory extends React.Component {
             <TextLabel>Your Stories</TextLabel>
             <SeperateLine />
             <FilterLabel>HASHTAG</FilterLabel>
-            {this.props.hashtag.slice(0, 5).map(hashtag => (
+            {this.props.hashtag.slice(0, 4).map(hashtag => (
               <Fragment key={hashtag}>
                 {this.state.chossingHashtag.includes(hashtag) ?
                   <TouchableOpacity

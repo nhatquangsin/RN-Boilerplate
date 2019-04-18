@@ -78,6 +78,10 @@ const Title = styled.Text`
   font-family: 'pacifico';
 `
 
+const images = {
+  'story-background.png': require('../assets/images/story-background.png')
+}
+
 export default class Story extends React.Component {
   state = {
     position: 'relative',
@@ -107,7 +111,7 @@ export default class Story extends React.Component {
             zIndex={zIndex}
           >
             <Image
-              source={background}
+              source={images[this.props.story.image]}
             >
               <StoryHeader>
                 <DateContainer>

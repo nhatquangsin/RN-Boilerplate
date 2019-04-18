@@ -7,6 +7,9 @@ const INITIAL_STATE = {
     'Friend',
     'Work',
     'Love',
+    'Life',
+    'Fun',
+    'Code'
   ],
   stories: [
     {
@@ -14,21 +17,31 @@ const INITIAL_STATE = {
       createDate: new Date(2019, 0, 4),
       title: 'My love story',
       content: `Don't they know it's the end of the world? It ended when you said goodbye`,
-      image: '',
+      image: 'story-background.png',
+      hashtags: [
+        'Love',
+        'Friend'
+      ]
     },
     {
       id: '112',
-      createDate: new Date(2019, 0, 4),
-      title: 'My love story',
+      createDate: new Date(2019, 10, 2),
+      title: 'A lovely live',
       content: `Don't they know it's the end of the world? It ended when you said goodbye`,
-      image: '',
+      image: 'story-background.png',
+      hashtags: [
+        'Fun'
+      ]
     },
     {
       id: '113',
-      createDate: new Date(2019, 0, 4),
-      title: 'My love story',
+      createDate: new Date(2018, 3, 1),
+      title: 'Woking with human',
       content: `Don't they know it's the end of the world? It ended when you said goodbye`,
-      image: '',
+      image: 'story-background.png',
+      hashtags: [
+        'Life'
+      ]
     }
   ]
 }
