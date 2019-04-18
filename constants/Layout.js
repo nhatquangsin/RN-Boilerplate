@@ -9,4 +9,5 @@ export default {
     deviceHeight,
   },
   isSmallDevice: deviceWidth < 375,
+  storyDateSize: 20,
 };

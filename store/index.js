@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import reducers from '../reducers';
 
 const persistConfig = {
-  key: 'story',
+  key: 'story4',
   storage: AsyncStorage,
   whitelist: ['story'],
 };

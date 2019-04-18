@@ -12,7 +12,7 @@ import {
   Easing,
 } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 

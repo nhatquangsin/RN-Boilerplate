@@ -7,6 +7,29 @@ const INITIAL_STATE = {
     'Friend',
     'Work',
     'Love',
+  ],
+  stories: [
+    {
+      id: '111',
+      createDate: new Date(2019, 0, 4),
+      title: 'My love story',
+      content: `Don't they know it's the end of the world? It ended when you said goodbye`,
+      image: '',
+    },
+    {
+      id: '112',
+      createDate: new Date(2019, 0, 4),
+      title: 'My love story',
+      content: `Don't they know it's the end of the world? It ended when you said goodbye`,
+      image: '',
+    },
+    {
+      id: '113',
+      createDate: new Date(2019, 0, 4),
+      title: 'My love story',
+      content: `Don't they know it's the end of the world? It ended when you said goodbye`,
+      image: '',
+    }
   ]
 }
 
