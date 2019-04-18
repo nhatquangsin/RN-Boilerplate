@@ -13,17 +13,23 @@ import {
 } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import styled from 'styled-components';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import AppNavigator from './navigations/AppNavigator';
 
 import robotDev from './assets/images/robot-dev.png';
 import robotProd from './assets/images/robot-prod.png';
-import font from './assets/fonts/SpaceMono-Regular.ttf';
+import font from './assets/fonts/Pacifico-Regular.ttf';
+import SpaceMono from './assets/fonts/SpaceMono-Regular.ttf';
+import Cardo from './assets/fonts/Cardo-Regular.ttf';
+import Kalam from './assets/fonts/Kalam-Regular.ttf';
 import Colors from './constants/Colors';
 import TabBarIcon from './components/TabBarIcon';
+import store, { persistor } from './store';
+import Layout from './constants/Layout';
 
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
+const { deviceWidth, deviceHeight } = Layout.window;
 
 const { UIManager } = NativeModules;
 
@@ -32,6 +38,8 @@ UIManager.setLayoutAnimationEnabledExperimental &&
 
 const DURATION = 200;
 const NAVIGATE_BUTTON_LEFT = deviceWidth * 2 / 5;
+const NAVIGATE_BUTTON_MARGIN_BOTTOM = 20;
+const ACTION_BUTTON_MARGIN_BOTTOM = 6.5;
 
 const NavigateButtonContainer = styled.View`
   position: absolute;
@@ -50,6 +58,11 @@ const NavigateButtonTouchable = styled.TouchableHighlight`
   background-color: ${props => props.backgroundColor || 'white'};
   border-radius: ${props => props.borderRadius || 100};
   z-index: ${props => props.zIndex || 0};
+  shadow-color: #6459A3;
+  shadow-offset: 3px 3px;
+  shadow-opacity: 0.25px;
+  shadow-radius: 5px;
+  elevation: 5;
 `
 const OnPressNavigatePanel = styled.TouchableHighlight`
   position: absolute;
@@ -74,21 +87,21 @@ export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
     isOnNavigatePanelOpen: false,
-    anim: new Animated.Value(0),
-    anim2: new Animated.Value(0),
-    anim2Left: new Animated.Value(NAVIGATE_BUTTON_LEFT),
-    anim3: new Animated.Value(0),
-    anim3Left: new Animated.Value(NAVIGATE_BUTTON_LEFT),
+    anim: new Animated.Value(NAVIGATE_BUTTON_MARGIN_BOTTOM + ACTION_BUTTON_MARGIN_BOTTOM),
+    anim2: new Animated.Value(NAVIGATE_BUTTON_MARGIN_BOTTOM + ACTION_BUTTON_MARGIN_BOTTOM),
+    anim2Left: new Animated.Value(NAVIGATE_BUTTON_LEFT + ACTION_BUTTON_MARGIN_BOTTOM),
+    anim3: new Animated.Value(NAVIGATE_BUTTON_MARGIN_BOTTOM + ACTION_BUTTON_MARGIN_BOTTOM),
+    anim3Left: new Animated.Value(NAVIGATE_BUTTON_LEFT + ACTION_BUTTON_MARGIN_BOTTOM),
   };
   _onPressNavigate = async () => {
     await LayoutAnimation.easeInEaseOut();
     await this.setState({ isOnNavigatePanelOpen: !this.state.isOnNavigatePanelOpen });
     const open = this.state.isOnNavigatePanelOpen;
-    const toValue = open ? 150 : 0;
-    const toValue2 = open ? 100 : 0;
-    const toValue2Left = open ? NAVIGATE_BUTTON_LEFT - 100 : NAVIGATE_BUTTON_LEFT;
-    const toValue3 = open ? 100 : 0;
-    const toValue3Left = open ? NAVIGATE_BUTTON_LEFT + 100 : NAVIGATE_BUTTON_LEFT;
+    const toValue = open ? 150 : NAVIGATE_BUTTON_MARGIN_BOTTOM + ACTION_BUTTON_MARGIN_BOTTOM;
+    const toValue2 = open ? 100 : NAVIGATE_BUTTON_MARGIN_BOTTOM + ACTION_BUTTON_MARGIN_BOTTOM;
+    const toValue2Left = open ? NAVIGATE_BUTTON_LEFT + ACTION_BUTTON_MARGIN_BOTTOM - 100 : NAVIGATE_BUTTON_LEFT + ACTION_BUTTON_MARGIN_BOTTOM;
+    const toValue3 = open ? 100 : NAVIGATE_BUTTON_MARGIN_BOTTOM + ACTION_BUTTON_MARGIN_BOTTOM;
+    const toValue3Left = open ? NAVIGATE_BUTTON_LEFT + ACTION_BUTTON_MARGIN_BOTTOM + 100 : NAVIGATE_BUTTON_LEFT + ACTION_BUTTON_MARGIN_BOTTOM;
     const createAnimation = function (value, duration, toValue, easing, delay = 0) {
       return Animated.timing(
         value,
@@ -120,29 +133,33 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
-          {this.state.isOnNavigatePanelOpen ?
-            <AnimatedPanel
-              backgroundColor={Colors.tintColor}
-              width={deviceWidth}
-              height={deviceHeight}
-              onPress={this._onPressNavigate}
-              isOnNavigatePanelOpen={this.state.isOnNavigatePanelOpen}
-            >
-              <View></View>
-            </AnimatedPanel> : null}
-          <NavigateButton
-            anim={this.state.anim}
-            anim2={this.state.anim2}
-            anim2Left={this.state.anim2Left}
-            anim3={this.state.anim3}
-            anim3Left={this.state.anim3Left}
-            isOnNavigatePanelOpen={this.state.isOnNavigatePanelOpen}
-            _onPressNavigate={this._onPressNavigate}
-          />
-        </View>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <View style={styles.container}>
+              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+              <AppNavigator />
+              {this.state.isOnNavigatePanelOpen ?
+                <AnimatedPanel
+                  backgroundColor={Colors.tintColor}
+                  width={deviceWidth}
+                  height={deviceHeight}
+                  onPress={this._onPressNavigate}
+                  isOnNavigatePanelOpen={this.state.isOnNavigatePanelOpen}
+                >
+                  <View></View>
+                </AnimatedPanel> : null}
+              <NavigateButton
+                anim={this.state.anim}
+                anim2={this.state.anim2}
+                anim2Left={this.state.anim2Left}
+                anim3={this.state.anim3}
+                anim3Left={this.state.anim3Left}
+                isOnNavigatePanelOpen={this.state.isOnNavigatePanelOpen}
+                _onPressNavigate={this._onPressNavigate}
+              />
+            </View>
+          </PersistGate>
+        </Provider>
       );
     }
   }
@@ -158,7 +175,10 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        'space-mono': font,
+        'pacifico': font,
+        'space-mono': SpaceMono,
+        'cardo': Cardo,
+        'kalam': Kalam,
       }),
     ]);
   };
@@ -174,14 +194,32 @@ export default class App extends React.Component {
   };
 }
 
+class ActionButton extends React.Component {
+  render() {
+    return (<AnimatedNavigateButton
+      width={deviceWidth / 6}
+      height={deviceWidth / 6}
+      borderRadius={deviceWidth / 10}
+      left={this.props.left}
+      bottom={this.props.bottom}
+      backgroundColor={Colors.actionButtonColor}
+      underlayColor={Colors.underlayColor}
+      onPress={this.props.onPress}
+      zIndex={1}
+    >
+      <NavigateButtonView
+        top={deviceWidth / 20}
+        left={deviceWidth / 20}
+        width={deviceWidth / 10}
+      >
+      </NavigateButtonView>
+    </AnimatedNavigateButton>)
+  }
+}
+
 class NavigateButton extends React.Component {
   _onPress = async () => {
     await this.props._onPressNavigate();
-    // const toValue = this.props.isOnNavigatePanelOpen ? 150 : 0;
-    // await Animated.timing(this.state.anim, {
-    //   toValue,
-    //   duration: 300,
-    // }).start();
   }
   render() {
     return (
@@ -191,11 +229,11 @@ class NavigateButton extends React.Component {
           height={deviceWidth / 5}
           borderRadius={deviceWidth / 10}
           left={NAVIGATE_BUTTON_LEFT}
-          bottom={0}
+          bottom={NAVIGATE_BUTTON_MARGIN_BOTTOM}
           backgroundColor={Colors.tintColor}
-          underlayColor={Colors.tintColor}
+          underlayColor={Colors.underlayColor}
           onPress={this._onPress}
-          zIndex={1}
+          zIndex={2}
         >
           <NavigateButtonView
             top={deviceWidth / 20}
@@ -206,63 +244,26 @@ class NavigateButton extends React.Component {
               size={deviceWidth / 10}
               name='calendar'
               backgroundColor={Colors.backgroundColor}
+              tabIconSelected='#fff'
+              tabIconDefault='#fff'
             />
           </NavigateButtonView>
         </NavigateButtonTouchable>
-        <AnimatedNavigateButton
-          width={deviceWidth / 5}
-          height={deviceWidth / 5}
-          borderRadius={deviceWidth / 10}
-          left={NAVIGATE_BUTTON_LEFT}
+        <ActionButton
+          left={NAVIGATE_BUTTON_LEFT + ACTION_BUTTON_MARGIN_BOTTOM}
           bottom={this.props.anim}
-          backgroundColor={Colors.tintColor}
-          underlayColor={Colors.tintColor}
           onPress={this._onPress}
-          zIndex={0}
-        >
-          <NavigateButtonView
-            top={deviceWidth / 20}
-            left={deviceWidth / 20}
-            width={deviceWidth / 10}
-          >
-          </NavigateButtonView>
-        </AnimatedNavigateButton>
-        <AnimatedNavigateButton
-          width={deviceWidth / 5}
-          height={deviceWidth / 5}
-          borderRadius={deviceWidth / 10}
+        />
+        <ActionButton
           left={this.props.anim2Left}
           bottom={this.props.anim2}
-          backgroundColor={Colors.tintColor}
-          underlayColor={Colors.tintColor}
           onPress={this._onPress}
-          zIndex={0}
-        >
-          <NavigateButtonView
-            top={deviceWidth / 20}
-            left={deviceWidth / 20}
-            width={deviceWidth / 10}
-          >
-          </NavigateButtonView>
-        </AnimatedNavigateButton>
-        <AnimatedNavigateButton
-          width={deviceWidth / 5}
-          height={deviceWidth / 5}
-          borderRadius={deviceWidth / 10}
+        />
+        <ActionButton
           left={this.props.anim3Left}
           bottom={this.props.anim3}
-          backgroundColor={Colors.tintColor}
-          underlayColor={Colors.tintColor}
           onPress={this._onPress}
-          zIndex={0}
-        >
-          <NavigateButtonView
-            top={deviceWidth / 20}
-            left={deviceWidth / 20}
-            width={deviceWidth / 10}
-          >
-          </NavigateButtonView>
-        </AnimatedNavigateButton>
+        />
       </Fragment>
     )
   }

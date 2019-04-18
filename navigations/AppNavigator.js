@@ -20,8 +20,10 @@ const createStack = (Screen, icon) => createStackNavigator(
       tabBarIcon: ({ focused }) => (
         <TabBarIcon
           focused={focused}
-          size={26}
+          size={25}
           name={icon}
+          tabIconSelected={Colors.tabIconSelected}
+          tabIconDefault={Colors.tabIconDefault}
         />
       ),
     }
@@ -32,7 +34,7 @@ const MyStoryStack = createStack(MyStory, 'edit');
 
 const PeopleStoryStack = createStack(PeopleStory, 'book');
 
-const PeopleStack = createStack(People, 'idcard');
+const PeopleStack = createStack(People, 'hearto');
 
 const ProfileStack = createStack(Profile, 'contacts');
 

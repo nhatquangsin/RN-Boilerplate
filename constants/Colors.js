@@ -11,4 +11,10 @@ export default {
   warningText: '#666804',
   noticeBackground: tintColor,
   noticeText: '#fff',
+  underlayColor: '#9b8ece',
+  actionButtonColor: '#9682e5',
+  mainBackground: '#fff',
+  line: '#D0D0D4',
+  noMainTextFont: '#9EA2A7',
+  mainTextFont: '#000',
 };
