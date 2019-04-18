@@ -5,10 +5,11 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Animated,
+  TouchableWithoutFeedback
 } from 'react-native';
 
 import styled from 'styled-components';
-import font from '../assets/fonts/SpaceMono-Regular.ttf';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 
@@ -23,6 +24,7 @@ const Container = styled.View`
 const ScrollContainer = styled.ScrollView`
   flex: 1;
   background-color: ${props => props.backgroundColorScroll || 'red'};
+  padding-right: 50;
 `
 const StoryContainer = styled.View`
   background-color: ${Colors.tintColor};
@@ -31,8 +33,8 @@ const StoryContainer = styled.View`
   margin: 10px;
   border-radius: 10px;
   shadow-color: #6459A3;
-  shadow-offset: 3px 3px;
-  shadow-opacity: 0.25px;
+  shadow-offset: 5px 5px;
+  shadow-opacity: 0.5px;
   shadow-radius: 5px;
   elevation: 5;
 `
@@ -87,16 +89,18 @@ export default class MyStory extends React.Component {
               <Hashtag># Love</Hashtag>
             </TouchableOpacity>
           </Label>
-          <TouchableOpacity
-            activeOpacity={0.5}
-          >
+          <TouchableWithoutFeedback>
             <StoryContainer></StoryContainer>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.5}
-          >
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback>
             <StoryContainer></StoryContainer>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback>
+            <StoryContainer></StoryContainer>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback>
+            <StoryContainer></StoryContainer>
+          </TouchableWithoutFeedback>
         </ScrollContainer>
       </Container>
     );
