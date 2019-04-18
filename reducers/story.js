@@ -17,7 +17,7 @@ const INITIAL_STATE = {
       createDate: new Date(2019, 0, 4),
       title: 'My love story',
       content: `Don't they know it's the end of the world? It ended when you said goodbye`,
-      image: 'story-background.png',
+      image: 'pink.png',
       hashtags: [
         'Love',
         'Friend'
@@ -28,7 +28,7 @@ const INITIAL_STATE = {
       createDate: new Date(2019, 10, 2),
       title: 'A lovely live',
       content: `Don't they know it's the end of the world? It ended when you said goodbye`,
-      image: 'story-background.png',
+      image: 'pink.png',
       hashtags: [
         'Fun'
       ]
@@ -38,7 +38,7 @@ const INITIAL_STATE = {
       createDate: new Date(2018, 3, 1),
       title: 'Woking with human',
       content: `Don't they know it's the end of the world? It ended when you said goodbye`,
-      image: 'story-background.png',
+      image: 'pink.png',
       hashtags: [
         'Life'
       ]

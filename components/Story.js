@@ -39,7 +39,7 @@ const StoryContainer = styled.View`
 const Image = styled.ImageBackground`
   flex: 1;
   width: ${deviceWidth * 3 / 4};
-  height: ${deviceHeight * 7 / 12};
+  height: ${deviceHeight * 8 / 12};
   border-radius: 10px;
   overflow: hidden;
   flex-direction: column;
@@ -79,7 +79,8 @@ const Title = styled.Text`
 `
 
 const images = {
-  'story-background.png': require('../assets/images/story-background.png')
+  'story-background.png': require('../assets/images/story-background.png'),
+  'pink.png': require('../assets/images/pink.png'),
 }
 
 export default class Story extends React.Component {
