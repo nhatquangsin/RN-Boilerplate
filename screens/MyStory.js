@@ -23,10 +23,10 @@ const Container = styled.View`
   padding-top: ${deviceHeight / 5};
   padding-bottom: ${deviceHeight / 10};
 `
-const ScrollContainer = styled.ScrollView`
+export const ScrollContainer = styled.ScrollView`
   flex: 1;
   background-color: ${props => props.backgroundColorScroll || 'red'};
-  padding-right: 50;
+  padding-right: ${props => props.paddingRight || 0};
 `
 const Label = styled.View`
   background-color: ${Colors.mainBackground};
@@ -97,6 +97,7 @@ class MyStory extends React.Component {
           horizontal
           showsHorizontalScrollIndicator={false}
           backgroundColorScroll={Colors.mainBackground}
+          paddingRight={50}
         >
           <Label>
             <TextLabel>Your Stories</TextLabel>

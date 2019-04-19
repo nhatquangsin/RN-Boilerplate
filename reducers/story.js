@@ -1,16 +1,7 @@
-import {
-  ADD_HASHTAG,
-} from '../actions';
+import { ADD_HASHTAG } from '../actions';
 
 const INITIAL_STATE = {
-  hashtag: [
-    'Friend',
-    'Work',
-    'Love',
-    'Life',
-    'Fun',
-    'Code'
-  ],
+  hashtag: ['Friend', 'Work', 'Love', 'Life', 'Fun', 'Code'],
   stories: [
     {
       id: '111',
@@ -18,10 +9,7 @@ const INITIAL_STATE = {
       title: 'My love story',
       content: `Don't they know it's the end of the world? It ended when you said goodbye`,
       image: 'pink.png',
-      hashtags: [
-        'Love',
-        'Friend'
-      ]
+      hashtags: ['Love', 'Friend'],
     },
     {
       id: '112',
@@ -29,9 +17,7 @@ const INITIAL_STATE = {
       title: 'A lovely live',
       content: `Don't they know it's the end of the world? It ended when you said goodbye`,
       image: 'pink.png',
-      hashtags: [
-        'Fun'
-      ]
+      hashtags: ['Fun'],
     },
     {
       id: '113',
@@ -39,24 +25,19 @@ const INITIAL_STATE = {
       title: 'Woking with human',
       content: `Don't they know it's the end of the world? It ended when you said goodbye`,
       image: 'pink.png',
-      hashtags: [
-        'Life'
-      ]
-    }
-  ]
-}
+      hashtags: ['Life'],
+    },
+  ],
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_HASHTAG:
       return {
         ...state,
-        hashtag: [
-          ...state.hashtag,
-          action.payload
-        ]
-      }
+        hashtag: [...state.hashtag, action.payload],
+      };
     default:
       return state;
   }
-}
+};
