@@ -12,6 +12,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import moment from 'moment';
+import { Transition } from 'react-navigation-fluid-transitions';
 
 import styled from 'styled-components/native';
 import Colors from '../constants/Colors';
@@ -91,38 +92,70 @@ export default class Story extends React.Component {
     return (
       <Fragment>
         <TouchableWithoutFeedback onPress={this._onPress}>
-          <StoryContainer>
-            <Image source={Colors.image} resizeMode="cover">
-              <StoryHeader>
-                <DateContainer>
-                  <StoryDateText
-                    color={Colors.noticeText}
-                    fontSize={Layout.storyDateSize}
-                  >
-                    {moment(story.createDate).date()}
-                  </StoryDateText>
-                  <StoryDateText
-                    color={Colors.noticeText}
-                    fontSize={Layout.storyDateSize}
-                  >
-                    {moment(story.createDate).format('MMM')}
-                  </StoryDateText>
-                  <StoryDateText
-                    color={Colors.noticeText}
-                    fontSize={16}
-                    opacity={0.8}
-                  >
-                    {moment(story.createDate).year()}
-                  </StoryDateText>
-                </DateContainer>
-              </StoryHeader>
-              <StoryFooter>
-                <Title color={Colors.noticeText} fontSize={24}>
-                  {story.title}
-                </Title>
-              </StoryFooter>
-            </Image>
-          </StoryContainer>
+          <View>
+            <Transition shared={story.id}>
+              <View
+                style={{
+                  width: (deviceWidth * 3) / 4,
+                  height: (deviceHeight * 7) / 12,
+                  backgroundColor: Colors.tintColor,
+                  margin: 10,
+                  borderWidth: 5,
+                  borderColor: Colors.tintColor,
+                  borderRadius: 10,
+                  shadowColor: Colors.tintColor,
+                  shadowOffset: { width: 5, height: 5 },
+                  shadowOpacity: 0.5,
+                  shadowRadius: 5,
+                  elevation: 5,
+                }}
+              >
+                {/* <StoryContainer> */}
+                <ImageBackground
+                  style={{
+                    flex: 1,
+                    borderWidth: 0,
+                    borderColor: Colors.tintColor,
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                  source={Colors.image}
+                  resizeMode="cover"
+                >
+                  <StoryHeader>
+                    <DateContainer>
+                      <StoryDateText
+                        color={Colors.noticeText}
+                        fontSize={Layout.storyDateSize}
+                      >
+                        {moment(story.createDate).date()}
+                      </StoryDateText>
+                      <StoryDateText
+                        color={Colors.noticeText}
+                        fontSize={Layout.storyDateSize}
+                      >
+                        {moment(story.createDate).format('MMM')}
+                      </StoryDateText>
+                      <StoryDateText
+                        color={Colors.noticeText}
+                        fontSize={16}
+                        opacity={0.8}
+                      >
+                        {moment(story.createDate).year()}
+                      </StoryDateText>
+                    </DateContainer>
+                  </StoryHeader>
+                  <StoryFooter>
+                    <Title color={Colors.noticeText} fontSize={24}>
+                      {story.title}
+                    </Title>
+                  </StoryFooter>
+                </ImageBackground>
+                {/* </StoryContainer> */}
+              </View>
+            </Transition>
+          </View>
         </TouchableWithoutFeedback>
       </Fragment>
     );

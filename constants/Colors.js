@@ -12,7 +12,7 @@ const imagePurple = require('../assets/images/purple.png');
 
 export const yellow = '#f9fc2f';
 const underlayYellow = '#feff8e';
-const actionsButtonColorYellow = '#fdff75';
+const actionButtonColorYellow = '#fdff75';
 const imageYellow = require('../assets/images/yellow.png');
 
 export const green = '#56A87F';
@@ -22,7 +22,7 @@ const imageGreen = require('../assets/images/green.png');
 
 export const pinkRed = '#CB5C5C';
 const underlayPinkRed = '#ff8c8c';
-const actionButtonPinkRed = '#ff5454';
+const actionButtonColorPinkRed = '#ff5454';
 const imagePinkRed = require('../assets/images/pinkred.png');
 
 const tintColor = pink;
@@ -30,7 +30,7 @@ const underlayColor = underlayPink;
 const actionButtonColor = actionButtonColorPink;
 const image = imagePink;
 
-export default {
+const theme = {
   tintColor,
   tabIconDefault: '#ccc',
   tabIconSelected: tintColor,
@@ -49,3 +49,55 @@ export default {
   mainTextFont: '#000',
   image,
 };
+
+export const pinkTheme = {
+  ...theme,
+  tintColor: pink,
+  tabIconSelected: tintColor,
+  noticeBackground: tintColor,
+  underlayColor: underlayPink,
+  actionButtonColor: actionButtonColorPink,
+  image: imagePink,
+};
+
+export const yellowTheme = {
+  ...theme,
+  tintColor: yellow,
+  tabIconSelected: tintColor,
+  noticeBackground: tintColor,
+  underlayColor: underlayYellow,
+  actionButtonColor: actionButtonColorYellow,
+  image: imageYellow,
+};
+
+export const purpleTheme = {
+  ...theme,
+  tintColor: purple,
+  tabIconSelected: tintColor,
+  noticeBackground: tintColor,
+  underlayColor: underlayPurple,
+  actionButtonColor: actionButtonColorPurple,
+  image: imagePurple,
+};
+
+export const greenTheme = {
+  ...theme,
+  tintColor: green,
+  tabIconSelected: tintColor,
+  noticeBackground: tintColor,
+  underlayColor: underlayGreen,
+  actionButtonColor: actionButtonColorGreen,
+  image: imageGreen,
+};
+
+export const pinkRedTheme = {
+  ...theme,
+  tintColor: pinkRed,
+  tabIconSelected: tintColor,
+  noticeBackground: tintColor,
+  underlayColor: underlayPinkRed,
+  actionButtonColor: actionButtonColorPinkRed,
+  image: imagePinkRed,
+};
+
+export default theme;
