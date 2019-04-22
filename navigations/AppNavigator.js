@@ -94,9 +94,9 @@ const BottomTabNavigator = createMaterialBottomTabNavigator(
   {
     Story: LayoutTransitions,
     Timeline: PeopleStoryStack,
-    Add: {
-      screen: () => null,
-    },
+    // Add: {
+    //   screen: () => null,
+    // },
     People: PeopleStack,
     Profile: ProfileStack,
   },

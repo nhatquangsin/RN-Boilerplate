@@ -1,4 +1,4 @@
-import { ADD_HASHTAG } from '../actions';
+import { ADD_HASHTAG, EDIT_CONTENT } from '../actions';
 
 const INITIAL_STATE = {
   hashtag: ['Friend', 'Work', 'Love', 'Life', 'Fun', 'Code'],
@@ -32,6 +32,19 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case EDIT_CONTENT:
+      return {
+        ...state,
+        stories: state.stories.map(story => {
+          if (story.id === action.payload.id) {
+            return {
+              ...story,
+              content: action.payload.content,
+            };
+          }
+          return story;
+        }),
+      };
     case ADD_HASHTAG:
       return {
         ...state,

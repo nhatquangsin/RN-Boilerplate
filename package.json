@@ -12,6 +12,8 @@
     "moment": "^2.24.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0",
+    "react-native-modal-datetime-picker": "^7.2.0",
     "react-native-paper": "^2.15.2",
     "react-native-parallax-scroll-view": "^0.21.3",
     "react-navigation": "^3.8.1",

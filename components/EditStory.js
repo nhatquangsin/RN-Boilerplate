@@ -38,8 +38,8 @@ const Container = styled.View`
 `;
 
 const Header = styled.View`
-  width: ${props => props.width || deviceWidth - 20};
-  padding: 10px;
+  width: ${props => props.width || deviceWidth - 30};
+  padding: 15px;
 `;
 
 const Footer = styled.View`
@@ -48,8 +48,6 @@ const Footer = styled.View`
   padding: 10px;
   padding-bottom: 30px;
 `;
-
-const AnimatedCustomScrollView = Animated.createAnimatedComponent(ScrollView);
 
 class EditStory extends Component {
   constructor(props) {
@@ -66,18 +64,27 @@ class EditStory extends Component {
     navigation.goBack();
   };
 
+  _onBlur = story => {
+    const { navigation } = this.props;
+    const editContent = navigation.getParam('editContent', '');
+    const { storyContent } = this.state;
+    if (story.content !== storyContent) {
+      editContent(story.id, storyContent);
+    }
+  };
+
   myCustomTransitionFunction = transitionInfo => {
     const { progress, start, end } = transitionInfo;
     const scaleInterpolation = progress.interpolate({
       inputRange: [0, start, end, 1],
-      outputRange: [0, 1, 1, 0],
+      outputRange: [0, 0, 0, 1],
     });
-    return { transform: [{ opacity: scaleInterpolation }] };
+    return { transform: [{ scale: scaleInterpolation }] };
   };
 
   render() {
     const { navigation } = this.props;
-    const { storyContent } = this.props;
+    const { storyContent } = this.state;
     const story = navigation.getParam('story', '');
     return (
       <Container>
@@ -157,7 +164,7 @@ class EditStory extends Component {
                         <Transition
                           shared={`year_${story.id}`}
                           appear="horizontal"
-                          disappear="vertical"
+                          disappear={this.myCustomTransitionFunction}
                         >
                           <Text
                             style={{
@@ -172,7 +179,7 @@ class EditStory extends Component {
                         <Transition
                           shared={`month_${story.id}`}
                           appear="horizontal"
-                          disappear="vertical"
+                          disappear={this.myCustomTransitionFunction}
                         >
                           <Text
                             style={{
@@ -187,7 +194,7 @@ class EditStory extends Component {
                         <Transition
                           shared={`date_${story.id}`}
                           appear="horizontal"
-                          disappear="vertical"
+                          disappear={this.myCustomTransitionFunction}
                         >
                           <Text
                             style={{
@@ -208,6 +215,16 @@ class EditStory extends Component {
                         }
                         value={storyContent}
                         placeholder="Write your story"
+                        scrollEnabled={false}
+                        style={{
+                          fontSize: 18,
+                          padding: 10,
+                          marginTop: 10,
+                          borderLeftColor: Colors.tintColor,
+                          borderLeftWidth: 2,
+                          fontFamily: 'enriqueta',
+                        }}
+                        onBlur={() => this._onBlur(story)}
                       />
                     </Footer>
                   </View>

@@ -25,10 +25,10 @@ const underlayPinkRed = '#ff8c8c';
 const actionButtonColorPinkRed = '#ff5454';
 const imagePinkRed = require('../assets/images/pinkred.png');
 
-const tintColor = pink;
-const underlayColor = underlayPink;
-const actionButtonColor = actionButtonColorPink;
-const image = imagePink;
+const tintColor = purple;
+const underlayColor = underlayPurple;
+const actionButtonColor = actionButtonColorPurple;
+const image = imagePurple;
 
 const theme = {
   tintColor,

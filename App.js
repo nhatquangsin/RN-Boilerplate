@@ -31,6 +31,9 @@ import font from './assets/fonts/Pacifico-Regular.ttf';
 import SpaceMono from './assets/fonts/SpaceMono-Regular.ttf';
 import Cardo from './assets/fonts/Cardo-Regular.ttf';
 import Kalam from './assets/fonts/Kalam-Regular.ttf';
+import Alegreya from './assets/fonts/Alegreya-Regular.ttf';
+import IndieFlower from './assets/fonts/IndieFlower.ttf';
+import Enriqueta from './assets/fonts/Enriqueta-Regular.ttf';
 import Colors from './constants/Colors';
 import TabBarIcon from './components/TabBarIcon';
 import store, { persistor } from './store';
@@ -171,6 +174,9 @@ export default class App extends React.Component {
         'space-mono': SpaceMono,
         cardo: Cardo,
         kalam: Kalam,
+        alegreya: Alegreya,
+        'indie-flower': IndieFlower,
+        enriqueta: Enriqueta,
       }),
     ]);
 
@@ -225,7 +231,7 @@ export default class App extends React.Component {
                 <View />
               </AnimatedPanel>
             ) : null}
-            <NavigateButton
+            {/* <NavigateButton
               anim={anim}
               anim2={anim2}
               anim2Left={anim2Left}
@@ -234,7 +240,7 @@ export default class App extends React.Component {
               isOnNavigatePanelOpen={isOnNavigatePanelOpen}
               _onPressNavigate={this._onPressNavigate}
               {...this.props}
-            />
+            /> */}
           </View>
         </PersistGate>
       </Provider>

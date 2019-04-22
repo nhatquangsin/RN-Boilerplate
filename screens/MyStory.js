@@ -16,6 +16,7 @@ import styled from 'styled-components/native';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import Story from '../components/Story';
+import { editContent } from '../actions';
 
 const { deviceWidth, deviceHeight } = Layout.window;
 
@@ -53,8 +54,8 @@ const FilterLabel = styled.Text`
 `;
 const Hashtag = styled.Text`
   color: ${props => props.color || '#fff'};
-  font-size: 16;
-  font-family: 'kalam';
+  font-size: 20;
+  font-family: 'indie-flower';
   padding: ${props => props.padding || '0px'};
 `;
 const HashtagContainer = styled.View`
@@ -79,7 +80,7 @@ class MyStory extends React.Component {
 
   _onChooseStory = story => {
     this.setState({ choosingStory: story.id });
-    this.props.navigation.navigate('EditStory', { story });
+    this.props.navigation.navigate('EditStory', { story, ...this.props });
   };
 
   _onFilter = hashtag => {
@@ -147,5 +148,7 @@ export default connect(
     hashtag: state.story.hashtag,
     stories: state.story.stories,
   }),
-  {}
+  {
+    editContent,
+  }
 )(MyStory);
