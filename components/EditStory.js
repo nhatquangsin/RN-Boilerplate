@@ -9,6 +9,7 @@ import {
   Animated,
   TextInput,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { Transition } from 'react-navigation-fluid-transitions';
 import moment from 'moment';
@@ -46,7 +47,7 @@ const Footer = styled.View`
   width: ${props => props.width || deviceWidth - 20};
   flex-direction: column;
   padding: 10px;
-  padding-bottom: 30px;
+  padding-bottom: 200px;
 `;
 
 class EditStory extends Component {
@@ -86,9 +87,13 @@ class EditStory extends Component {
     const { navigation } = this.props;
     const { storyContent } = this.state;
     const story = navigation.getParam('story', '');
+    const keyboardVerticalOffset = Platform.OS === 'ios' ? -100 : 0;
     return (
       <Container>
-        <KeyboardAvoidingView>
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={keyboardVerticalOffset}
+        >
           <Header>
             <TouchableOpacity onPress={this._goBack}>
               <FeatherIcon
