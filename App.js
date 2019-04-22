@@ -21,6 +21,7 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import styled from 'styled-components/native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import AppNavigator from './navigations/AppNavigator';
 import NavigationService from './components/NavigationService';
@@ -213,27 +214,28 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <View style={styles.container}>
-            {Platform.OS === 'ios' && (
-              <StatusBar barStyle={Layout.barStatusColor} />
-            )}
-            <AppNavigator
-              ref={navigatorRef => {
-                NavigationService.setTopLevelNavigator(navigatorRef);
-              }}
-            />
-            {isOnNavigatePanelOpen ? (
-              <AnimatedPanel
-                backgroundColor={Colors.tintColor}
-                width={deviceWidth}
-                height={deviceHeight}
-                onPress={this._onPressNavigate}
-                isOnNavigatePanelOpen={isOnNavigatePanelOpen}
-              >
-                <View />
-              </AnimatedPanel>
-            ) : null}
-            {/* <NavigateButton
+          <PaperProvider>
+            <View style={styles.container}>
+              {Platform.OS === 'ios' && (
+                <StatusBar barStyle={Layout.barStatusColor} />
+              )}
+              <AppNavigator
+                ref={navigatorRef => {
+                  NavigationService.setTopLevelNavigator(navigatorRef);
+                }}
+              />
+              {isOnNavigatePanelOpen ? (
+                <AnimatedPanel
+                  backgroundColor={Colors.tintColor}
+                  width={deviceWidth}
+                  height={deviceHeight}
+                  onPress={this._onPressNavigate}
+                  isOnNavigatePanelOpen={isOnNavigatePanelOpen}
+                >
+                  <View />
+                </AnimatedPanel>
+              ) : null}
+              {/* <NavigateButton
               anim={anim}
               anim2={anim2}
               anim2Left={anim2Left}
@@ -243,7 +245,8 @@ export default class App extends React.Component {
               _onPressNavigate={this._onPressNavigate}
               {...this.props}
             /> */}
-          </View>
+            </View>
+          </PaperProvider>
         </PersistGate>
       </Provider>
     );

@@ -19,6 +19,7 @@
     "react-native-paper": "^2.15.2",
     "react-native-parallax-scroll-view": "^0.21.3",
     "react-native-parallax-scrollview": "^3.0.0",
+    "react-native-tag-input": "^0.0.21",
     "react-navigation": "^3.8.1",
     "react-navigation-fluid-transitions": "^0.3.1",
     "react-navigation-material-bottom-tabs": "^1.0.0",

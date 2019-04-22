@@ -1,3 +1,5 @@
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable global-require */
 import React, { Component } from 'react';
 import styled from 'styled-components/native';
@@ -14,7 +16,8 @@ import {
 } from 'react-native';
 import { Transition } from 'react-navigation-fluid-transitions';
 import moment from 'moment';
-import { FAB } from 'react-native-paper';
+import { FAB, Button, Paragraph, Dialog, Portal } from 'react-native-paper';
+import TagInput from 'react-native-tag-input';
 import ParallaxScrollView from './ParallaxScrollView';
 
 import FeatherIcon from './FeatherIcon';
@@ -61,6 +64,8 @@ class EditStory extends Component {
     this.state = {
       storyContent: (story && story.content) || '',
       editable: false,
+      hashtags: [],
+      text: '',
     };
   }
 
@@ -92,6 +97,20 @@ class EditStory extends Component {
 
   _onEditButton = () => {
     this.setState({ editable: true }, () => this.handleMoveSelectionPress());
+  };
+
+  onChangeText = text => {
+    this.setState({ text });
+
+    const lastTyped = text.charAt(text.length - 1);
+    const parseWhen = [',', ' ', ';', '\n'];
+
+    if (parseWhen.indexOf(lastTyped) > -1) {
+      this.setState({
+        hashtags: [...this.state.hashtags, this.state.text],
+        text: '',
+      });
+    }
   };
 
   render() {
@@ -162,6 +181,16 @@ class EditStory extends Component {
                   }}
                 >
                   <Footer>
+                    <TagInput
+                      value={this.state.hashtags}
+                      onChange={hashtags => this.setState({ hashtags })}
+                      labelExtractor={email => email}
+                      text={this.state.text}
+                      onChangeText={this.onChangeText}
+                      tagColor={Colors.underlayColor}
+                      tagTextColor="white"
+                      tagContainerStyle={{ height: 30, padding: 2 }}
+                    />
                     <TextInput
                       ref={el => (this.inputRef = el)}
                       autoCapitalize="sentences"
