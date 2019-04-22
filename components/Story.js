@@ -51,11 +51,11 @@ const StoryHeader = styled.View`
   justify-content: space-between;
   align-items: center;
 `;
-const StoryDateText = styled.Text`
-  color: ${props => props.color || '#000'};
-  font-size: ${props => props.fontSize || '16'};
-  opacity: ${props => props.opacity || 1};
-`;
+// const StoryDateText = styled.Text`
+//   color: ${props => props.color || '#000'};
+//   font-size: ${props => props.fontSize || '16'};
+//   opacity: ${props => props.opacity || 1};
+// `;
 const DateContainer = styled.View`
   flex-direction: column;
   justify-content: center;
@@ -87,6 +87,15 @@ export default class Story extends React.Component {
     _onChooseStory(story);
   };
 
+  myCustomTransitionFunction = transitionInfo => {
+    const { progress, start, end } = transitionInfo;
+    const scaleInterpolation = progress.interpolate({
+      inputRange: [0, start, end, 1],
+      outputRange: [88, 80, 1, 1],
+    });
+    return { transform: [{ scale: scaleInterpolation }] };
+  };
+
   render() {
     const { story } = this.props;
     return (
@@ -110,7 +119,6 @@ export default class Story extends React.Component {
                   elevation: 5,
                 }}
               >
-                {/* <StoryContainer> */}
                 <ImageBackground
                   style={{
                     flex: 1,
@@ -125,34 +133,59 @@ export default class Story extends React.Component {
                 >
                   <StoryHeader>
                     <DateContainer>
-                      <StoryDateText
-                        color={Colors.noticeText}
-                        fontSize={Layout.storyDateSize}
+                      {/* <Transition appear="horizontal" disappear="vertical"> */}
+                      <Text
+                        style={{
+                          color: Colors.noticeText,
+                          fontSize: Layout.storyDateSize,
+                          opacity: 1,
+                        }}
                       >
                         {moment(story.createDate).date()}
-                      </StoryDateText>
-                      <StoryDateText
-                        color={Colors.noticeText}
-                        fontSize={Layout.storyDateSize}
+                      </Text>
+                      {/* </Transition>
+                      <Transition appear="horizontal" disappear="vertical"> */}
+                      <Text
+                        style={{
+                          color: Colors.noticeText,
+                          fontSize: Layout.storyDateSize,
+                          opacity: 1,
+                        }}
                       >
                         {moment(story.createDate).format('MMM')}
-                      </StoryDateText>
-                      <StoryDateText
-                        color={Colors.noticeText}
-                        fontSize={16}
-                        opacity={0.8}
+                      </Text>
+                      {/* </Transition>
+                      <Transition appear="horizontal" disappear="vertical"> */}
+                      <Text
+                        style={{
+                          color: Colors.noticeText,
+                          fontSize: 16,
+                          opacity: 0.8,
+                        }}
                       >
                         {moment(story.createDate).year()}
-                      </StoryDateText>
+                      </Text>
+                      {/* </Transition> */}
                     </DateContainer>
                   </StoryHeader>
                   <StoryFooter>
-                    <Title color={Colors.noticeText} fontSize={24}>
-                      {story.title}
-                    </Title>
+                    <Transition
+                      shared={`title_${story.id}`}
+                      appear="scale"
+                      disappear="scale"
+                    >
+                      <Text
+                        style={{
+                          color: Colors.noticeText,
+                          fontSize: 24,
+                          fontFamily: 'pacifico',
+                        }}
+                      >
+                        {story.title}
+                      </Text>
+                    </Transition>
                   </StoryFooter>
                 </ImageBackground>
-                {/* </StoryContainer> */}
               </View>
             </Transition>
           </View>

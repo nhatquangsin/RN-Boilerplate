@@ -77,9 +77,9 @@ class MyStory extends React.Component {
     chossingHashtag: [],
   };
 
-  _onChooseStory = id => {
-    this.setState({ choosingStory: id });
-    this.props.navigation.navigate('EditStory', { id });
+  _onChooseStory = story => {
+    this.setState({ choosingStory: story.id });
+    this.props.navigation.navigate('EditStory', { story });
   };
 
   _onFilter = hashtag => {
@@ -130,7 +130,7 @@ class MyStory extends React.Component {
           {this.props.stories.map(story => (
             <Story
               choosingStory={this.state.choosingStory}
-              _onChooseStory={() => this._onChooseStory(story.id)}
+              _onChooseStory={() => this._onChooseStory(story)}
               key={story.id}
               story={story}
               {...this.props}
