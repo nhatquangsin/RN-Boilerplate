@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React, { Component } from 'react';
 import styled from 'styled-components/native';
 import {
@@ -13,7 +14,7 @@ import {
 } from 'react-native';
 import { Transition } from 'react-navigation-fluid-transitions';
 import moment from 'moment';
-import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import ParallaxScrollView from './ParallaxScrollView';
 
 import FeatherIcon from './FeatherIcon';
 import Layout from '../constants/Layout';
@@ -34,7 +35,6 @@ const Container = styled.View`
   flex: 1;
   width: ${deviceWidth};
   height: ${deviceHeight};
-  padding-top: 10px;
   background-color: ${Colors.tintColor};
 `;
 
@@ -94,147 +94,72 @@ class EditStory extends Component {
           behavior="position"
           keyboardVerticalOffset={keyboardVerticalOffset}
         >
-          <Header>
-            <TouchableOpacity onPress={this._goBack}>
-              <FeatherIcon
-                size={deviceWidth / 10}
-                name="arrow-down-circle"
-                color="#fff"
-              />
-            </TouchableOpacity>
-          </Header>
           <Transition shared={story.id} appear="scale" disappear="scale">
             <View
               style={{
                 width: deviceWidth,
                 height: deviceHeight,
                 backgroundColor: Colors.tintColor,
-                // paddingTop: 20,
               }}
             >
-              <ImageBackground
-                style={{
-                  flex: 1,
-                  borderWidth: 0,
-                  borderColor: Colors.tintColor,
+              <ParallaxScrollView
+                showsVerticalScrollIndicator={false}
+                windowHeight={deviceHeight * 0.5}
+                backgroundSource={require('../assets/images/purple.png')}
+                navBarTitle={story.title}
+                navBarColor={Colors.tintColor}
+                navBarTitleColor={Colors.mainTextFont}
+                userName={story.title}
+                userTitle={moment(story.createDate).format('YYYY, MMM, DD')}
+                userImage="https://images.unsplash.com/photo-1555865661-725e46d6748d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80"
+                leftIcon={{
+                  name: 'arrow-down-circle',
+                  color: '#fff',
+                  size: 30,
+                  type: 'feather',
                 }}
-                source={Colors.image}
-                resizeMode="cover"
+                leftIconOnPress={this._goBack}
+                rightIcon={{
+                  name: 'user',
+                  color: '#fff',
+                  size: 30,
+                  type: 'font-awesome',
+                }}
               >
-                <ParallaxScrollView
-                  backgroundColor={Colors.tintColor}
-                  contentBackgroundColor={Colors.noticeText}
-                  backgroundScrollSpeed={1}
-                  parallaxHeaderHeight={300}
-                  renderForeground={() => (
-                    <ImageBackground
-                      style={{
-                        flex: 1,
-                        borderWidth: 0,
-                        borderColor: Colors.tintColor,
-                      }}
-                      source={Colors.image}
-                      resizeMode="cover"
-                    />
-                  )}
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: 10,
+                    paddingTop: 20,
+                    paddingBottom: 60,
+                    borderRadius: 20,
+                  }}
                 >
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      padding: 10,
-                      paddingTop: 20,
-                      paddingBottom: 60,
-                      borderRadius: 20,
-                    }}
-                  >
-                    <Footer>
-                      <Transition
-                        shared={`title_${story.id}`}
-                        appear="scale"
-                        disappear="scale"
-                      >
-                        <Text
-                          style={{
-                            color: Colors.mainTextFont,
-                            fontSize: 24,
-                            fontFamily: 'pacifico',
-                          }}
-                        >
-                          {story.title}
-                        </Text>
-                      </Transition>
-                      <View style={{ flexDirection: 'row' }}>
-                        <Transition
-                          shared={`year_${story.id}`}
-                          appear="horizontal"
-                          disappear={this.myCustomTransitionFunction}
-                        >
-                          <Text
-                            style={{
-                              color: Colors.mainTextFont,
-                              fontSize: Layout.storyDateSize,
-                              opacity: 1,
-                            }}
-                          >
-                            {moment(story.createDate).format('YYYY, ')}
-                          </Text>
-                        </Transition>
-                        <Transition
-                          shared={`month_${story.id}`}
-                          appear="horizontal"
-                          disappear={this.myCustomTransitionFunction}
-                        >
-                          <Text
-                            style={{
-                              color: Colors.mainTextFont,
-                              fontSize: Layout.storyDateSize,
-                              opacity: 1,
-                            }}
-                          >
-                            {moment(story.createDate).format('MMM, ')}
-                          </Text>
-                        </Transition>
-                        <Transition
-                          shared={`date_${story.id}`}
-                          appear="horizontal"
-                          disappear={this.myCustomTransitionFunction}
-                        >
-                          <Text
-                            style={{
-                              color: Colors.mainTextFont,
-                              fontSize: Layout.storyDateSize,
-                              opacity: 1,
-                            }}
-                          >
-                            {moment(story.createDate).format('DD')}
-                          </Text>
-                        </Transition>
-                      </View>
-                      <TextInput
-                        autoCapitalize="sentences"
-                        multiline
-                        onChangeText={text =>
-                          this.setState({ storyContent: text })
-                        }
-                        value={storyContent}
-                        placeholder="Write your story"
-                        scrollEnabled={false}
-                        style={{
-                          fontSize: 18,
-                          padding: 10,
-                          marginTop: 10,
-                          borderLeftColor: Colors.tintColor,
-                          borderLeftWidth: 2,
-                          fontFamily: 'enriqueta',
-                        }}
-                        onBlur={() => this._onBlur(story)}
-                      />
-                    </Footer>
-                  </View>
-                </ParallaxScrollView>
-              </ImageBackground>
+                  <Footer>
+                    <TextInput
+                      autoCapitalize="sentences"
+                      multiline
+                      onChangeText={text =>
+                        this.setState({ storyContent: text })
+                      }
+                      value={storyContent}
+                      placeholder="Write your story"
+                      scrollEnabled={false}
+                      style={{
+                        fontSize: 18,
+                        padding: 10,
+                        marginTop: 10,
+                        borderLeftColor: Colors.tintColor,
+                        borderLeftWidth: 2,
+                        fontFamily: 'enriqueta',
+                      }}
+                      onBlur={() => this._onBlur(story)}
+                    />
+                  </Footer>
+                </View>
+              </ParallaxScrollView>
             </View>
           </Transition>
         </KeyboardAvoidingView>
