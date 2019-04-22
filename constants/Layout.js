@@ -10,4 +10,5 @@ export default {
   },
   isSmallDevice: deviceWidth < 375,
   storyDateSize: 20,
+  barStatusColor: 'default',
 };

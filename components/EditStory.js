@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { Transition } from 'react-navigation-fluid-transitions';
 import moment from 'moment';
+import { FAB } from 'react-native-paper';
 import ParallaxScrollView from './ParallaxScrollView';
 
 import FeatherIcon from './FeatherIcon';
@@ -51,12 +52,15 @@ const Footer = styled.View`
 `;
 
 class EditStory extends Component {
+  inputRef = null;
+
   constructor(props) {
     super(props);
     const { navigation } = this.props;
     const story = navigation.getParam('story', '');
     this.state = {
       storyContent: (story && story.content) || '',
+      editable: false,
     };
   }
 
@@ -72,6 +76,7 @@ class EditStory extends Component {
     if (story.content !== storyContent) {
       editContent(story.id, storyContent);
     }
+    this.setState({ editable: false });
   };
 
   myCustomTransitionFunction = transitionInfo => {
@@ -83,13 +88,32 @@ class EditStory extends Component {
     return { transform: [{ scale: scaleInterpolation }] };
   };
 
+  handleMoveSelectionPress = () => this.inputRef.focus();
+
+  _onEditButton = () => {
+    this.setState({ editable: true }, () => this.handleMoveSelectionPress());
+  };
+
   render() {
     const { navigation } = this.props;
-    const { storyContent } = this.state;
+    const { storyContent, editable } = this.state;
     const story = navigation.getParam('story', '');
     const keyboardVerticalOffset = Platform.OS === 'ios' ? -100 : 0;
     return (
       <Container>
+        <FAB
+          style={{
+            position: 'absolute',
+            margin: 16,
+            right: 0,
+            bottom: 0,
+            zIndex: 20,
+            backgroundColor: Colors.tintColor,
+          }}
+          color={Colors.mainBackground}
+          icon="edit"
+          onPress={this._onEditButton}
+        />
         <KeyboardAvoidingView
           behavior="position"
           keyboardVerticalOffset={keyboardVerticalOffset}
@@ -108,7 +132,7 @@ class EditStory extends Component {
                 backgroundSource={require('../assets/images/purple.png')}
                 navBarTitle={story.title}
                 navBarColor={Colors.tintColor}
-                navBarTitleColor={Colors.mainTextFont}
+                navBarTitleColor={Colors.mainBackground}
                 userName={story.title}
                 userTitle={moment(story.createDate).format('YYYY, MMM, DD')}
                 userImage="https://images.unsplash.com/photo-1555865661-725e46d6748d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80"
@@ -139,6 +163,7 @@ class EditStory extends Component {
                 >
                   <Footer>
                     <TextInput
+                      ref={el => (this.inputRef = el)}
                       autoCapitalize="sentences"
                       multiline
                       onChangeText={text =>
@@ -151,10 +176,9 @@ class EditStory extends Component {
                         fontSize: 18,
                         padding: 10,
                         marginTop: 10,
-                        borderLeftColor: Colors.tintColor,
-                        borderLeftWidth: 2,
                         fontFamily: 'enriqueta',
                       }}
+                      editable={editable}
                       onBlur={() => this._onBlur(story)}
                     />
                   </Footer>

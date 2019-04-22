@@ -253,9 +253,10 @@ export default class ParallaxScrollView extends Component {
             outputRange: [
               'transparent',
               'transparent',
-              navBarColor || 'rgba(0, 0, 0, 1.0)',
+              'rgba(40, 34, 66, 1.0)',
             ],
           }),
+          paddingTop: 10,
         }}
       >
         {leftIcon && (
