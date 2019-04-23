@@ -113,7 +113,7 @@ class EditStory extends Component {
         hashtags: [...this.state.hashtags, this.state.text],
         text: '',
       });
-      addHashtag(story.id, this.state.text);
+      addHashtag(story.id, [...this.state.hashtags, this.state.text]);
     }
   };
 
@@ -187,7 +187,14 @@ class EditStory extends Component {
                   <Footer>
                     <TagInput
                       value={this.state.hashtags}
-                      onChange={hashtags => this.setState({ hashtags })}
+                      onChange={hashtags => {
+                        this.setState({ hashtags });
+                        const addHashtag = navigation.getParam(
+                          'addHashtag',
+                          ''
+                        );
+                        addHashtag(story.id, hashtags);
+                      }}
                       labelExtractor={email => email}
                       text={this.state.text}
                       onChangeText={this.onChangeText}

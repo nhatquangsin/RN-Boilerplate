@@ -80,7 +80,7 @@ export default (state = INITIAL_STATE, action) => {
           if (story.id === action.payload.id) {
             return {
               ...story,
-              hashtags: [...story.hashtags, action.payload.hashtag],
+              hashtags: action.payload.hashtags,
             };
           }
           return story;
