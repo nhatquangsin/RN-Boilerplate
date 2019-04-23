@@ -64,7 +64,7 @@ class EditStory extends Component {
     this.state = {
       storyContent: (story && story.content) || '',
       editable: false,
-      hashtags: [],
+      hashtags: story.hashtags,
       text: '',
     };
   }
@@ -100,16 +100,20 @@ class EditStory extends Component {
   };
 
   onChangeText = text => {
+    const { navigation } = this.props;
     this.setState({ text });
 
     const lastTyped = text.charAt(text.length - 1);
     const parseWhen = [',', ' ', ';', '\n'];
+    const addHashtag = navigation.getParam('addHashtag', '');
+    const story = navigation.getParam('story', '');
 
     if (parseWhen.indexOf(lastTyped) > -1) {
       this.setState({
         hashtags: [...this.state.hashtags, this.state.text],
         text: '',
       });
+      addHashtag(story.id, this.state.text);
     }
   };
 
@@ -189,7 +193,24 @@ class EditStory extends Component {
                       onChangeText={this.onChangeText}
                       tagColor={Colors.underlayColor}
                       tagTextColor="white"
-                      tagContainerStyle={{ height: 30, padding: 2 }}
+                      tagContainerStyle={{
+                        height: 30,
+                        padding: 2,
+                      }}
+                      tagTextStyle={{
+                        fontFamily: 'enriqueta',
+                      }}
+                      inputProps={{
+                        keyboardType: 'default',
+                        placeholder: 'tag...',
+                        style: {
+                          height: 50,
+                          width: 200,
+                          fontSize: 18,
+                          padding: 10,
+                          fontFamily: 'enriqueta',
+                        },
+                      }}
                     />
                     <TextInput
                       ref={el => (this.inputRef = el)}

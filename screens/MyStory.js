@@ -16,7 +16,7 @@ import styled from 'styled-components/native';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import Story from '../components/Story';
-import { editContent } from '../actions';
+import { editContent, addHashtag } from '../actions';
 
 const { deviceWidth, deviceHeight } = Layout.window;
 
@@ -54,8 +54,8 @@ const FilterLabel = styled.Text`
 `;
 const Hashtag = styled.Text`
   color: ${props => props.color || '#fff'};
-  font-size: 20;
-  font-family: 'indie-flower';
+  font-size: 18;
+  font-family: 'enriqueta';
   padding: ${props => props.padding || '0px'};
 `;
 const HashtagContainer = styled.View`
@@ -70,6 +70,15 @@ const HashtagContainer = styled.View`
   shadow-opacity: 0.5px;
   shadow-radius: 5px;
   elevation: 5;
+`;
+
+const NoneHashtagContainer = styled.View`
+  background-color: ${props => props.background || 'red'};
+  margin: 5px;
+  padding: 2px;
+  border-width: 0px;
+  justify-content: center;
+  align-items: center;
 `;
 
 class MyStory extends React.Component {
@@ -108,21 +117,29 @@ class MyStory extends React.Component {
           <Label>
             <TextLabel>Your Stories</TextLabel>
             <SeperateLine />
-            <FilterLabel>HASHTAG</FilterLabel>
+            <NoneHashtagContainer background={Colors.mainBackground}>
+              <FilterLabel>HASHTAG</FilterLabel>
+            </NoneHashtagContainer>
             {this.props.hashtag.slice(0, 4).map(hashtag => (
-              <Fragment key={hashtag}>
-                {this.state.chossingHashtag.includes(hashtag) ? (
-                  <TouchableOpacity onPress={() => this._onFilter(hashtag)}>
+              <Fragment key={hashtag.title}>
+                {this.state.chossingHashtag.includes(hashtag.title) ? (
+                  <TouchableOpacity
+                    onPress={() => this._onFilter(hashtag.title)}
+                  >
                     <HashtagContainer background={Colors.tintColor}>
-                      <Hashtag>{`# ${hashtag}`}</Hashtag>
+                      <Hashtag>{`# ${hashtag.title}`}</Hashtag>
                     </HashtagContainer>
                   </TouchableOpacity>
                 ) : (
-                  <TouchableOpacity onPress={() => this._onFilter(hashtag)}>
-                    <Hashtag
-                      color={Colors.mainTextFont}
-                      padding="5px"
-                    >{`# ${hashtag}`}</Hashtag>
+                  <TouchableOpacity
+                    onPress={() => this._onFilter(hashtag.title)}
+                  >
+                    <NoneHashtagContainer background={Colors.mainBackground}>
+                      <Hashtag
+                        color={Colors.mainTextFont}
+                        // padding="5px"
+                      >{`# ${hashtag.title}`}</Hashtag>
+                    </NoneHashtagContainer>
                   </TouchableOpacity>
                 )}
               </Fragment>
@@ -150,5 +167,6 @@ export default connect(
   }),
   {
     editContent,
+    addHashtag,
   }
 )(MyStory);

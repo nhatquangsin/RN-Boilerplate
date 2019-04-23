@@ -1,7 +1,26 @@
 import { ADD_HASHTAG, EDIT_CONTENT } from '../actions';
 
 const INITIAL_STATE = {
-  hashtag: ['Friend', 'Work', 'Love', 'Life', 'Fun', 'Code'],
+  hashtag: [
+    {
+      title: 'Friend',
+      amount: 1,
+    },
+    {
+      title: 'Work',
+      amount: 0,
+    },
+    {
+      title: 'Love',
+      amount: 1,
+    },
+    {
+      title: 'Life',
+      amount: 1,
+    },
+    { title: 'Fun', amount: 1 },
+    { title: 'Code', amount: 0 },
+  ],
   stories: [
     {
       id: '111',
@@ -48,7 +67,24 @@ export default (state = INITIAL_STATE, action) => {
     case ADD_HASHTAG:
       return {
         ...state,
-        hashtag: [...state.hashtag, action.payload],
+        hashtag: state.hashtag.map(hashtag => {
+          if (hashtag.title === action.payload.hashtag) {
+            return {
+              ...hashtag,
+              amount: hashtag.amount + 1,
+            };
+          }
+          return hashtag;
+        }),
+        stories: state.stories.map(story => {
+          if (story.id === action.payload.id) {
+            return {
+              ...story,
+              hashtags: [...story.hashtags, action.payload.hashtag],
+            };
+          }
+          return story;
+        }),
       };
     default:
       return state;

@@ -7,14 +7,18 @@ import thunk from 'redux-thunk';
 import reducers from '../reducers';
 
 const persistConfig = {
-  key: 'storystory1',
+  key: 'storystory3',
   storage: AsyncStorage,
   whitelist: ['story'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
-const store = createStore(persistedReducer, {}, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(
+  persistedReducer,
+  {},
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 export const persistor = persistStore(store);
 

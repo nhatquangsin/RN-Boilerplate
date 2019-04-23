@@ -2,10 +2,10 @@ export const ADD_HASHTAG = 'add hash tag';
 export const CHANGE_THEME = 'change theme';
 export const EDIT_CONTENT = 'edit content';
 
-export function addHashtag(hashtag) {
+export function addHashtag(id, hashtag) {
   return {
     type: ADD_HASHTAG,
-    payload: hashtag,
+    payload: { id, hashtag },
   };
 }
 
